@@ -1,0 +1,115 @@
+/**
+ * RESET DEFAULT CSS
+ */
+ul
+    margin: 0
+    padding-left: 0
+    li
+        list-style: none
+html
+    font-family: Consolas,monospace
+    font-size: 14px
+    height: 100%
+
+    body 
+        max-width: 1170px
+        margin: 0 auto
+        height: 100%
+        main
+            height: 100%
+            display: flex
+            padding: 0 15px
+            nav
+                width: 180px
+                border-right: 1px solid #000
+                #logo 
+                    a
+                        height: 130px
+                        display: flex
+                        width: 130px
+                        justify-content: center
+                        align-items: center
+                        border-radius: 50%
+                        background: #000
+                        text-decoration: none
+                        margin: 15px auto 30px auto                        
+                        span 
+                            font-size: 80px
+                            color:#fff
+                ul
+                    li
+                        margin-bottom: 7px
+                        a
+                            color: #000
+                            text-decoration: none
+                            font-weight: 300
+                            display: block
+                            border-right: 0px solid #fff
+                            -webkit-transition: all .2s ease-in-out
+                            -moz-transition: all .2s ease-in-out
+                            -o-transition: all .2s ease-in-out
+                            transition: all .2s ease-in-out                           
+                            &:hover
+                                border-color: #000
+                                border-right-width: 5px
+                                background-image: -webkit-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -o-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -moz-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                        &.active
+                            a
+                                border-color: #000
+                                border-right-width: 5px
+                                background-image: -webkit-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -o-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -moz-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))                                
+
+            .contents
+                width: calc(100% - 200px)
+                padding-top: 50px
+                section
+                    overflow: hidden
+                    .inner-wrp 
+                        padding: 15px 0
+
+
+            footer
+            
+        #loader
+            position: fixed
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            display: flex
+            align-items: center
+            justify-content: center
+            background-color:#fff
+ 
+
+
+// RESET CSS
+.left-border-style
+    border-left: 5px solid #000
+    padding-left: 15px
+h1
+    margin-bottom: 30px
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+    font-weight: 400
+    margin-top: 0
+p
+    margin-bottom: 0
+article
+
+// DEFAULT CLASSES
+.trn
+    -webkit-transition: all .5s ease-in-out
+    -moz-transition: all .5s ease-in-out
+    -o-transition: all .5s ease-in-out
+    transition: all .5s ease-in-out  
