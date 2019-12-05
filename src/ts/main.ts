@@ -14,7 +14,7 @@ class Nagivate {
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
         this.resizeWindow();
-        this.loader(12,this.removeLoader);
+        //this.loader(1,this.removeLoader);
 
     }
 
@@ -99,3 +99,34 @@ class Nagivate {
     }
 }
 let navigate = new Nagivate();
+
+
+class Gallery {
+    
+    showDetailsBtn: NodeListOf<Element> | null;
+
+    constructor() {
+        console.log('gallery');
+        this.showDetailsBtn = document.querySelectorAll('[data-show-details]');
+        this.showDetails();
+    }
+
+    showDetails(): void {
+        let _this = this;
+        this.showDetailsBtn!.forEach(function(item: Element, i){
+            item.addEventListener("click", ( e ) => {
+                let parentContainer = (<any> e.srcElement).parentNode.parentNode;
+                let btnDelay = setTimeout(()=>{
+                    (<any> e.srcElement).classList.toggle('opened');
+                    clearTimeout(btnDelay);
+                },400);
+                parentContainer.style.transition = "all .5s";
+                parentContainer.classList.toggle('opened')
+                
+            });
+        });
+
+    }
+
+}
+let gallery = new Gallery();
