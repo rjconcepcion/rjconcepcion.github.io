@@ -102,11 +102,10 @@ let navigate = new Nagivate();
 
 
 class Gallery {
-    
+
     showDetailsBtn: NodeListOf<Element> | null;
 
     constructor() {
-        console.log('gallery');
         this.showDetailsBtn = document.querySelectorAll('[data-show-details]');
         this.showDetails();
     }
@@ -130,3 +129,52 @@ class Gallery {
 
 }
 let gallery = new Gallery();
+
+class Email {
+
+    data: {
+        to: string,
+        subject: string,
+        html: string,
+        sendername: string
+    }
+
+    constructor() {
+        this.data = {
+            to : 'rbrtjhncncpcn@gmail.com',
+            subject : 'PORTFOLIO EMAIL - ',
+            html: 'Test content',
+            sendername : ''
+        }
+        this.submitForm();
+
+
+
+
+    }
+
+    submitForm(): void {
+        let _this = this;
+        document.getElementById("send")!.addEventListener("click", function(){
+            _this.data.sendername = (<any> document.querySelector('[name="name"]')).value;
+            _this.data.html = "<b>"+ (<any> document.querySelector('[name="email"]')).value + "</b>: " + (<any> document.getElementById("msg")).value;
+            _this.send();
+        });
+    }
+
+    send(): void {
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState != 1 && this.readyState != 4) {
+                alert("theres an issue, can't send");
+            }
+        });
+        xhr.open("POST", "https://rjconcepcion-c089.restdb.io/mail");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("x-apikey", "5de9d7ef4658275ac9dc2394");        
+        xhr.send(JSON.stringify(this.data));
+    }
+
+}
+let email = new Email();
