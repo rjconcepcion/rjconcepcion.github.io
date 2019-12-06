@@ -9,22 +9,19 @@ ul
 html
     font-family: Consolas,monospace
     font-size: 14px
-    height: 100%
-
     body
         margin: 0 auto
-        height: 100%
-        overflow: hidden
         main
-            // height: calc(100% - 50px)
-            height: 100%
             display: flex
             padding: 0 15px
             max-width: 1170px
-            margin: 0 auto            
+            margin: 0 auto
+            position: relative
             nav
                 width: 180px
                 border-right: 1px solid #000
+                position: fixed
+                height: 100%
                 #logo 
                     a
                         height: 130px
@@ -72,8 +69,8 @@ html
                                 background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))                                
 
             .contents
-                width: calc(100% - 200px)
-                padding-top: 50px
+                margin-left: 180px
+                padding-top: 66px
                 section
                     overflow: hidden
                     .inner-wrp 
@@ -158,17 +155,69 @@ html
                                                         margin-right: 0
                                                 a
                                                     background: #fff
-                                                    width: 30px
-                                                    height: 30px
+                                                    min-width: 34px
+                                                    height: 34px
                                                     display: block
                                                     display: flex
                                                     align-items: center
                                                     justify-content: center
-                                                    border-radius: 50%                                                 
+                                                    border-radius: 50%
+                                                    margin-right: 15px
                                                     i
                                                         color: #000
-                                                        font-size: 19px
-                                                        
+                                                        font-size: 23px
+                    .form-wrap
+                        -webkit-box-sizing: border-box
+                        -moz-box-sizing: border-box
+                        box-sizing: border-box                        
+                        border-left: 5px solid #000
+                        padding-left: 15px   
+                        max-width: 320px
+                        width: 100%  
+                        * 
+                            -webkit-box-sizing: border-box
+                            -moz-box-sizing: border-box
+                            box-sizing: border-box                                        
+                        .field-wrap
+                            width: 100%
+                            margin-bottom: 15px
+                            position: relative
+                            .icon-wrap
+                                position: absolute
+                                width: 30px
+                                background-color: #000
+                                top: 0
+                                bottom: 0
+                                width: 30px
+                                display: flex
+                                align-items: center
+                                justify-content: center
+                                i
+                                    color: #fff
+                                    font-size: 17px
+                            &:nth-child(3)
+                                .icon-wrap
+                                    bottom: 4px
+                            &:last-of-type
+                                input
+                                    padding-left: 0
+                                    background-color:#000
+                                    color:#fff
+                            input,
+                            textarea
+                                width: 100%
+                                border: 0
+                                font-size: 16px
+                                padding: 5px 0px  
+                                border-bottom: 1px solid #000
+                                padding-left: 36px
+                                outline: none 
+                                font-family: Consolas,monospace !important
+                            textarea
+                                resize: none
+                                height: 100px
+                                bottom: 4px                                
+
 
 
                                                      
@@ -201,6 +250,8 @@ html
     padding-left: 15px
 h1
     margin-bottom: 30px
+h2
+    margin-bottom: 35px
 h1,
 h2,
 h3,
