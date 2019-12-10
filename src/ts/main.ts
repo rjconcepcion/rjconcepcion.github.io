@@ -4,8 +4,10 @@ class Nagivate {
     contents: NodeListOf<Element> | null;
     contentsHeight: Array<any>;
     currentPage: string;
+    loaderTimeout: number;
 
     constructor() {
+        this.loaderTimeout = 0;
         this.menuLinks = document.querySelectorAll('ul li a');
         this.contents = document.querySelectorAll('div.contents section');
         this.contentsHeight = [];
@@ -14,8 +16,7 @@ class Nagivate {
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
         this.resizeWindow();
-        //this.loader(1,this.removeLoader);
-
+        this.loader(15,this.removeLoader);
     }
 
     assignEvents(): void {
@@ -73,6 +74,8 @@ class Nagivate {
     }
 
     loader(limit: number = -1, callback: any): void {
+        this.showLoader();
+        let _this = this;
         let loader = ['|','/','─','\\'];
         let ctr = 0;
         let remainder = 0;
@@ -83,11 +86,13 @@ class Nagivate {
             }
             ctr++;
             remainder++;
-            if(remainder === limit){
+            if(remainder === limit || this.loaderTimeout == -2){
                 clearInterval(interval);
                 callback();
+                this.loaderTimeout = 0;
             }
         },150);
+         
     }
     removeLoader(): void {
         document.getElementById("loader")!.style.opacity = "0";
@@ -96,6 +101,9 @@ class Nagivate {
     showLoader(): void {
         document.getElementById("loader")!.style.opacity = "1";
         document.getElementById("loader")!.style.zIndex = "1";
+    }
+    testing(): void {
+        console.log("test navigate");
     }
 }
 let navigate = new Nagivate();
@@ -138,36 +146,85 @@ class Email {
         html: string,
         sendername: string
     }
+    formErr: Array<string>;
+    thankYouMsg: Array<string>;
 
     constructor() {
         this.data = {
             to : 'rbrtjhncncpcn@gmail.com',
-            subject : 'PORTFOLIO EMAIL - ',
+            subject : '',
             html: 'Test content',
             sendername : ''
         }
+        this.formErr = [];
+        this.thankYouMsg = [
+            'Nice message, very touching.',
+            'Thanks, what an epic message.',
+            'That message is so sweet! thanks.',
+        ]
         this.submitForm();
+    }
 
+    someValidation(): boolean {
+        
+        let name = (<any> document.querySelector('[name="name"]')).value;
+        let email = (<any> document.querySelector('[name="email"]')).value;
+        let message = (<any> document.getElementById("msg")).value;
+        let errorCtr: number = 0;
+        let err: Array<string> = [];
 
-
-
+        if(!name.replace(/\s/g,'')){
+            err[errorCtr] = "Nickname invalid!";
+            errorCtr++;
+        }
+        if(!email.replace(/\s/g,'')){
+            err[errorCtr] = "Email address invalid!";
+            errorCtr++;
+        }else if(!this._validateEmail(email)){
+            err[errorCtr] = "Email address format invalid!";
+            errorCtr++;
+        }
+        if(!message.replace(/\s/g,'')){
+            err[errorCtr] = "Message invalid!";
+            errorCtr++;
+        }        
+        if(errorCtr){
+            this.formErr = err;
+            return false;
+        }
+        this.data.subject = "PORTFOLIO EMAIL - " + email;
+        this.data.sendername = name;
+        this.data.html = email + ": " + message;
+        return true;
     }
 
     submitForm(): void {
         let _this = this;
         document.getElementById("send")!.addEventListener("click", function(){
-            _this.data.sendername = (<any> document.querySelector('[name="name"]')).value;
-            _this.data.html = "<b>"+ (<any> document.querySelector('[name="email"]')).value + "</b>: " + (<any> document.getElementById("msg")).value;
-            _this.send();
+            if(!_this.someValidation()){
+                document.querySelector(".form-wrap .form-response")!.textContent = _this._formatErrorMsg(_this.formErr);
+            }else{
+                _this.send();                
+            }
         });
     }
 
     send(): void {
-        var xhr = new XMLHttpRequest();
+        let _this = this;
+        let xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState != 1 && this.readyState != 4) {
                 alert("theres an issue, can't send");
+            }
+            if (this.readyState === 1){
+                navigate.loader(-1,()=>{});
+            }
+            if (this.readyState === 4){    
+                navigate.loaderTimeout = -2;
+                navigate.removeLoader();
+                _this._clearform();
+                document.querySelector(".form-wrap .form-response")!.textContent = _this.thankYouMsg[Math.floor(Math.random() * 3)];
             }
         });
         xhr.open("POST", "https://rjconcepcion-c089.restdb.io/mail");
@@ -176,5 +233,21 @@ class Email {
         xhr.send(JSON.stringify(this.data));
     }
 
+    _validateEmail(email: string): boolean {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+            return true;
+        }
+        return false;
+    }    
+
+    _formatErrorMsg(err: Array<string>): string {
+        return err.join(" ");
+    }
+
+    _clearform(): void {
+        (<any> document.querySelector('[name="name"]')).value = "";
+        (<any> document.querySelector('[name="email"]')).value = "";
+        (<any> document.getElementById("msg")).value = "";
+    }
 }
 let email = new Email();
