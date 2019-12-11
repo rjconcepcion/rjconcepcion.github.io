@@ -80,7 +80,7 @@ class Nagivate {
         let ctr = 0;
         let remainder = 0;
         let interval = setInterval(()=>{
-            document.querySelector("#loader")!.textContent = loader[ctr];
+            document.querySelector("#loader span")!.textContent = loader[ctr];
             if(ctr > 2){
                 ctr = -1;
             }
