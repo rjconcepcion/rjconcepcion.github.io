@@ -1,0 +1,283 @@
+/**
+ * RESET DEFAULT CSS
+ */
+ul
+    margin: 0
+    padding-left: 0
+    li
+        list-style: none
+html
+    font-family: Consolas,monospace
+    font-size: 14px
+    body
+        margin: 0 auto
+        main
+            display: flex
+            padding: 0 15px
+            max-width: 1170px
+            margin: 0 auto
+            position: relative
+            nav
+                width: 180px
+                border-right: 1px solid #000
+                position: fixed
+                height: 100%
+                #logo 
+                    a
+                        height: 130px
+                        display: flex
+                        width: 130px
+                        justify-content: center
+                        align-items: center
+                        border-radius: 50%
+                        background: #000
+                        text-decoration: none
+                        margin: 15px auto 30px auto                        
+                        &:hover 
+                            animation: birdmove .5s
+                        span 
+                            font-size: 80px
+                            color:#fff
+                        
+                ul
+                    li
+                        margin-bottom: 7px
+                        a
+                            color: #000
+                            text-decoration: none
+                            font-weight: 300
+                            display: block
+                            border-right: 0px solid #fff
+                            -webkit-transition: all .2s ease-in-out
+                            -moz-transition: all .2s ease-in-out
+                            -o-transition: all .2s ease-in-out
+                            transition: all .2s ease-in-out                           
+                            &:hover
+                                border-color: #000
+                                border-right-width: 5px
+                                background-image: -webkit-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -o-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -moz-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                        &.active
+                            a
+                                border-color: #000
+                                border-right-width: 5px
+                                background-image: -webkit-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -o-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: -moz-linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))
+                                background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))                                
+
+            .contents
+                margin-left: 180px
+                padding-top: 66px
+                section
+                    overflow: hidden
+                    .inner-wrp 
+                        padding: 15px 0
+                    .gallery
+                        border-left: 5px solid #000
+                        padding-left: 5px
+                        display: flex      
+                        flex-flow: wrap               
+                        .img-wrap
+                            border: 1px dashed #000
+                            padding: 3px
+                            -webkit-box-sizing: border-box
+                            -moz-box-sizing: border-box
+                            box-sizing: border-box
+                            height: 208px
+                            position: relative
+                            margin: 10px
+                            img  
+                            .filler
+                                position: absolute
+                                top: 0
+                                left: 0
+                                right: 75%
+                                bottom: 0
+                                background: rgba(0, 0, 0, 0.75)
+                                &.opened
+                                    right: 0%
+                                    .inner-details-wrap
+                                        > *
+                                            opacity: 1 !important                                            
+                                .inner-wrap
+                                    height: 100%
+                                    position: relative                                  
+                                    .fa-plus-circle
+                                        position: absolute
+                                        top: calc(50% - 15px)
+                                        right: -13px
+                                        font-size: 30px
+                                        color: #E91E63
+                                        box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.65)
+                                        border-radius: 50%
+                                        cursor: pointer
+                                        background: rgba(0, 0, 0, 0.7)
+                                        &.opened
+                                            transform: rotate(45deg)
+                                    .details-wrap
+                                        overflow: hidden
+                                        height: 100%
+                                        position: relative
+                                        .inner-details-wrap
+                                            height: inherit
+                                            width: 246px
+                                            -webkit-box-sizing: border-box
+                                            -moz-box-sizing: border-box
+                                            box-sizing: border-box
+                                            padding: 15px
+                                            h3
+                                                font-size: 18px
+                                                font-weight: 700
+                                            h3,
+                                            p
+                                                -webkit-transition: all .5s ease-in-out
+                                                -moz-transition: all .5s ease-in-out
+                                                -o-transition: all .5s ease-in-out
+                                                transition: all .5s ease-in-out                                                
+                                                opacity: .3                                                
+                                            *
+                                                color:#fff
+                                            .some-logo
+                                                position: absolute
+                                                bottom: 15px
+                                                left: 15px
+                                                right: 15px
+                                                display: flex
+                                                span
+                                                    font-size: 34px
+                                                    margin-right: 15px
+                                                    &:hover
+                                                        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.9)                                                    
+                                                    &:last-of-type
+                                                        margin-right: 0
+                                                a
+                                                    background: #fff
+                                                    min-width: 34px
+                                                    height: 34px
+                                                    display: block
+                                                    display: flex
+                                                    align-items: center
+                                                    justify-content: center
+                                                    border-radius: 50%
+                                                    margin-right: 15px
+                                                    i
+                                                        color: #000
+                                                        font-size: 23px
+                    .form-wrap
+                        -webkit-box-sizing: border-box
+                        -moz-box-sizing: border-box
+                        box-sizing: border-box                        
+                        border-left: 5px solid #000
+                        padding-left: 15px   
+                        max-width: 320px
+                        width: 100%  
+                        * 
+                            -webkit-box-sizing: border-box
+                            -moz-box-sizing: border-box
+                            box-sizing: border-box                                        
+                        .field-wrap
+                            width: 100%
+                            margin-bottom: 15px
+                            position: relative
+                            .icon-wrap
+                                position: absolute
+                                width: 30px
+                                background-color: #000
+                                top: 0
+                                bottom: 0
+                                width: 30px
+                                display: flex
+                                align-items: center
+                                justify-content: center
+                                i
+                                    color: #fff
+                                    font-size: 17px
+                            &:nth-child(3)
+                                .icon-wrap
+                                    bottom: 4px
+                            &:nth-child(4)
+                                input
+                                    padding-left: 0
+                                    background-color:#000
+                                    color:#fff
+                            input,
+                            textarea
+                                width: 100%
+                                border: 0
+                                font-size: 16px
+                                padding: 5px 0px  
+                                border-bottom: 1px solid #000
+                                padding-left: 36px
+                                outline: none 
+                                font-family: Consolas,monospace !important
+                            textarea
+                                resize: none
+                                height: 100px
+                                bottom: 4px                                
+
+
+
+                                                     
+        // footer
+        //     height: 49px
+        //     border-top: 1px solid #000
+        //     transform: skewY(5deg)
+        //     background-color: #fff
+        //     padding-top: 20px
+        //     p
+        //         text-align: center
+        //         transform: skewY(-5deg)
+        //         width: 50%
+              
+        #loader
+            position: fixed
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            display: flex
+            align-items: center
+            justify-content: center
+            background-color:#fff
+ 
+
+// RESET CSS
+.left-border-style
+    border-left: 5px solid #000
+    padding-left: 15px
+h1
+    margin-bottom: 30px
+h2
+    margin-bottom: 35px
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+    font-weight: 400
+    margin-top: 0
+p
+    margin-bottom: 0
+article
+
+// DEFAULT CLASSES
+.forceOpacity
+    opacity: 0 !important
+.trn
+    -webkit-transition: all .5s ease-in-out
+    -moz-transition: all .5s ease-in-out
+    -o-transition: all .5s ease-in-out
+    transition: all .5s ease-in-out  
+//KEY FRAMES
+
+@keyframes birdmove
+    0%
+        transform: rotate(0deg)
+    50%
+        transform: rotate(5deg)
+    100%
+        transform: rotate(0deg)
