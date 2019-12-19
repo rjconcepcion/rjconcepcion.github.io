@@ -22,6 +22,7 @@ html
                 border-right: 1px solid #000
                 position: fixed
                 height: 100%
+                display: none
                 #logo
                     a
                         height: 130px
@@ -69,7 +70,7 @@ html
                                 background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))                                
 
             .contents
-                margin-left: 180px
+                // margin-left: 180px
                 padding-top: 66px
                 section
                     overflow: hidden
@@ -273,6 +274,11 @@ article
     -moz-transition: all .5s ease-in-out
     -o-transition: all .5s ease-in-out
     transition: all .5s ease-in-out  
+.trnFast
+    -webkit-transition: all .2s ease-in-out
+    -moz-transition: all .2s ease-in-out
+    -o-transition: all .2s ease-in-out
+    transition: all .2s ease-in-out
 
 .readm
     text-decoration: none
@@ -280,6 +286,27 @@ article
     span
         letter-spacing: -3px
 //KEY FRAMES
+.locked
+    height: 200px
+    width: 200px
+    display: flex
+    align-items: center
+    justify-content: center
+    border-radius: 50%
+    overflow: hidden
+    background-color: #f2f2f2
+    /* box-shadow: inset 0 0 0 113px #000000 */
+    .release-content
+        cursor: pointer
+        height: 80px
+        width: 80px
+        border-radius: 50%
+        border: 1px
+        background-color: #e3e3e3  
+        outline-color: transparent 
+        i
+            font-size: 28px
+
 
 @keyframes birdmove
     0%
@@ -288,3 +315,13 @@ article
         transform: rotate(5deg)
     100%
         transform: rotate(0deg)
+
+@keyframes pabebe
+    0%
+        transform: rotate(5deg)
+    25%
+        transform: rotate(0deg)
+    50%
+        transform: rotate(-5deg)
+    100%
+        transform: rotate(0deg)        

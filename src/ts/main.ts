@@ -16,7 +16,7 @@ class Nagivate {
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
         this.resizeWindow();
-        this.loader(15,this.removeLoader);
+        this.loader(1,this.removeLoader);
     }
 
     assignEvents(): void {
@@ -107,8 +107,10 @@ class Nagivate {
     }
 }
 let navigate = new Nagivate();
+/*
 
 
+**/
 class Gallery {
 
     showDetailsBtn: NodeListOf<Element> | null;
@@ -137,7 +139,6 @@ class Gallery {
 
 }
 let gallery = new Gallery();
-
 class Email {
 
     data: {
@@ -251,3 +252,75 @@ class Email {
     }
 }
 let email = new Email();
+
+class LockChallenge {
+
+    buttons: NodeListOf<Element> | null;
+    buttonWiggleDuration: number;
+    count: number;
+    timer: boolean;
+    timerLimit: number;
+    clickCount: number;
+
+    constructor() {
+        this.buttonWiggleDuration = 500;
+        this.buttons = document.querySelectorAll('.release-content');
+        this.count = 0;
+        this.timer = false;
+        this.timerLimit = 5000;
+        this.clickCount = 0;
+        this.prepareButtons();
+    }
+    prepareButtons(): void {
+        this.buttons!.forEach((btn: Element) => btn.addEventListener('click',() => this.clickResult(<HTMLElement>btn)));
+    }
+    clickResult(btn: HTMLElement): void {
+
+        let lockIcon = btn.querySelector('i');
+        
+        
+        
+        if(!this.timer){
+            this.timer = true;
+
+            let counter = setInterval(()=>{
+                this.count++;
+                console.log(this.count + " ~ " + this.clickCount);                
+            },100);
+
+            let timeOut = setTimeout(()=>{
+                clearInterval(counter);
+                clearTimeout(timeOut);
+                this.timer = false;
+                this.count = 0;
+                this.clickCount = 0;
+            },this.timerLimit);
+        }else{
+            this.clickCount ++;
+            
+            this._unlockingMove(lockIcon);
+
+        }
+
+
+
+    }
+    private _animateButton(btn: HTMLElement): void {
+        let animationTime = this.buttonWiggleDuration * .001;            
+        let timeout = setTimeout(()=>{
+            btn.style.animation = "none";
+            clearTimeout(timeout);
+        },this.buttonWiggleDuration);
+        btn.style.animation = "pabebe " + animationTime + "s";        
+    }
+
+    private _unlockingMove(lockIcon: HTMLElement | null): void {
+        if(this.clickCount % 2 == 1){
+            lockIcon!.style.transform = "rotate(-10deg)";
+        }else{
+            lockIcon!.style.transform = "rotate(10deg)";
+        }
+    }
+
+}
+let lock = new LockChallenge();

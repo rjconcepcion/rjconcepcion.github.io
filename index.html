@@ -20,7 +20,7 @@
 <body>
     <main>
         <nav>
-            <div id="logo">
+            <div id="logo" class="forceOpacity">
                 <a href="/"><span class="fa fa-crow"></span></a>
             </div>
             <ul>
@@ -43,11 +43,13 @@
     
             <section id="about">
                 <div class="inner-wrp">
-                    <h1 class='main-header left-border-style'>LOREM IPSUM</h1>
-                    <article class="left-border-style">
-                        <h2>Sub header lorem</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec neque dolor, aliquet vel vulputate et, scelerisque eu dolor. Etiam a quam sed diam tristique venenatis nec id tellus. Pellentesque dictum fermentum erat</p>
-                    </article>                      
+                    
+                    <div class="locked" data-target-content="#test">
+                        <button class="release-content">
+                            <i class="fas fa-lock trnFast"></i>
+                        </button>
+                    </div>
+                  
                 </div>                    
             </section>    
             
@@ -336,6 +338,10 @@
         </div>        
     </main>
     <!-- <footer>
+
+
+q
+
         <p>LOREM IPSUM DOLOR SIT AMET</p>
     </footer> -->
     <div id="loader">please wait <span></span></div>
