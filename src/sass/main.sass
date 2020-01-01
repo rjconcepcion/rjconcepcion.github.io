@@ -299,6 +299,9 @@ article
         overflow: hidden
         position: relative
         background-color: #ededed
+        &:hover
+            i
+                animation: triggered .5s
         .challenge
             height: 100%
             width: 100%
@@ -338,6 +341,15 @@ article
     100%
         transform: rotate(0deg)
 
+@keyframes triggered
+    0%
+        transform: rotate(0deg)
+    33%
+        transform: rotate(-10deg)
+    66%
+        transform: rotate(10deg)
+    100%
+        transform: rotate(-10deg)
 @keyframes pabebe
     0%
         transform: rotate(10deg)
