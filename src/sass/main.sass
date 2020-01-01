@@ -22,7 +22,6 @@ html
                 border-right: 1px solid #000
                 position: fixed
                 height: 100%
-                display: none
                 #logo
                     a
                         height: 130px
@@ -70,7 +69,7 @@ html
                                 background-image: linear-gradient(to right,#fff, rgba(0, 0, 0, 0.02))                                
 
             .contents
-                // margin-left: 180px
+                margin-left: 180px
                 padding-top: 66px
                 section
                     overflow: hidden
@@ -286,27 +285,50 @@ article
     span
         letter-spacing: -3px
 //KEY FRAMES
-.locked
+.forshadow
     height: 200px
     width: 200px
-    display: flex
-    align-items: center
-    justify-content: center
-    border-radius: 50%
-    overflow: hidden
-    background-color: #f2f2f2
-    /* box-shadow: inset 0 0 0 113px #000000 */
-    .release-content
-        cursor: pointer
-        height: 80px
-        width: 80px
+    margin: 0 auto
+    border-radius: 50% 
+    &.alive
+        animation: alive 3s ease-in-out infinite
+    .locked
+        height: 200px
+        width: 200px
         border-radius: 50%
-        border: 1px
-        background-color: #e3e3e3  
-        outline-color: transparent 
-        i
-            font-size: 28px
+        overflow: hidden
+        position: relative
+        background-color: #ededed
+        .challenge
+            height: 100%
+            width: 100%
+            border-radius: 50%
+            display: flex
+            align-items: center
+            justify-content: center
+            .release-content
+                cursor: pointer
+                height: 80px
+                width: 80px
+                border-radius: 50%
+                border: 1px
+                background-color: #000  
+                outline-color: transparent 
+                i
+                    font-size: 32px
+                    color: #fff
 
+@keyframes alive
+    0%
+        transform: translateY(0px)
+    25%
+        transform: translateY(-5px)
+    50%
+        transform: translateY(5px)
+    75%
+        transform: translateY(-5px)                
+    100%
+        transform: translateY(0px) 
 
 @keyframes birdmove
     0%
@@ -318,10 +340,24 @@ article
 
 @keyframes pabebe
     0%
-        transform: rotate(5deg)
-    25%
-        transform: rotate(0deg)
+        transform: rotate(10deg)
+    10%
+        transform: rotate(-10deg)  
+    20%
+        transform: rotate(10deg)  
+    30%
+        transform: rotate(-10deg)  
+    40%
+        transform: rotate(10deg)  
     50%
-        transform: rotate(-5deg)
+        transform: rotate(-10deg)  
+    60%
+        transform: rotate(10deg)  
+    70%
+        transform: rotate(-10deg)  
+    80%
+        transform: rotate(10deg)  
+    90%
+        transform: rotate(-10deg)                                                         
     100%
-        transform: rotate(0deg)        
+        transform: rotate(0deg)         
