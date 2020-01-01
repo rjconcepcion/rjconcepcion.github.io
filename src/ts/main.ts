@@ -260,52 +260,94 @@ class LockChallenge {
     count: number;
     timer: boolean;
     timerLimit: number;
-    clickCount: number;
+    timerTotal: number;
+    clickCount: number = 0;
+    clickRequest: number;
+    challengeSuccess: boolean;
+    counter: any;
+    timeOut: any;
+    cssTimeMaxSize: number;
 
     constructor() {
+        this.challengeSuccess = false;
         this.buttonWiggleDuration = 500;
         this.buttons = document.querySelectorAll('.release-content');
-        this.count = 0;
+        this.count = 1;
         this.timer = false;
-        this.timerLimit = 5000;
-        this.clickCount = 0;
+        this.timerLimit = 3000; //#//
+        this.timerTotal = this.timerLimit * 0.01;
+        this.clickRequest = 20; //#//
+        this.cssTimeMaxSize = 60;
+
         this.prepareButtons();
     }
     prepareButtons(): void {
         this.buttons!.forEach((btn: Element) => btn.addEventListener('click',() => this.clickResult(<HTMLElement>btn)));
     }
-    clickResult(btn: HTMLElement): void {
+    clickResult(btn: HTMLElement): boolean {
 
         let lockIcon = btn.querySelector('i');
-        
-        
-        
+        let challengeElem: HTMLElement | null = document.querySelector('.locked .challenge');
+        let timerElem: HTMLElement | null = document.querySelector('.locked');
+
+
+        if(this.challengeSuccess){
+            return true;
+        }
+
         if(!this.timer){
             this.timer = true;
 
-            let counter = setInterval(()=>{
-                this.count++;
-                console.log(this.count + " ~ " + this.clickCount);                
+            (<HTMLElement> document.querySelector(".forshadow")).classList.remove('alive');
+
+            this._animateButton(lockIcon);
+
+            this.counter = setInterval(()=>{
+                this._timerBGColor(timerElem,this.count++, this.timerTotal, "rgb(255, 117, 117)");
+                console.log("test");     
             },100);
 
-            let timeOut = setTimeout(()=>{
-                clearInterval(counter);
-                clearTimeout(timeOut);
-                this.timer = false;
-                this.count = 0;
-                this.clickCount = 0;
+            this.timeOut = setTimeout(()=>{
+                this.clearTimeOutInterval();
+                this.clearLock(challengeElem, timerElem);
+                this.lockNormalState(lockIcon);
+                if(!this.isChallengeOk()){
+                    console.log("failed")
+                    lockIcon!.classList.remove('fa-lock')
+                    lockIcon!.classList.add('fa-times');
+                    setTimeout(()=>{
+                        lockIcon!.classList.remove('fa-times')
+                        lockIcon!.classList.add('fa-lock');
+                        (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
+                    },500);
+                }
             },this.timerLimit);
-        }else{
-            this.clickCount ++;
-            
+        }else{        
+            this.clickCount++
             this._unlockingMove(lockIcon);
-
+            this._timerBGColor(challengeElem, this.clickCount, this.clickRequest,"#679267");
+            if(this.isChallengeOk()){
+                this.clearTimeOutInterval();
+                this.challengeSuccess = true;
+                lockIcon!.classList.remove('fa-lock')
+                lockIcon!.classList.add('fa-unlock');
+                setTimeout(()=>{
+                    this.lockNormalState(lockIcon);
+                    lockIcon!.classList.remove('fa-unlock')
+                    lockIcon!.classList.add('fa-lock-open');
+                    (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
+                },500);
+                return true;
+            }
         }
-
-
-
+        return false;
     }
-    private _animateButton(btn: HTMLElement): void {
+
+    private lockNormalState(lockIcon: HTMLElement | null): void {
+        lockIcon!.style.transform = "rotate(0deg)";
+    }
+
+    private _animateButton(btn: any): void {
         let animationTime = this.buttonWiggleDuration * .001;            
         let timeout = setTimeout(()=>{
             btn.style.animation = "none";
@@ -320,6 +362,47 @@ class LockChallenge {
         }else{
             lockIcon!.style.transform = "rotate(10deg)";
         }
+    }
+
+    private _timerBGColor(element: HTMLElement | null, timer: number, timerTotal: number, color: string): void {            
+        let percentage = (timer / timerTotal) * 100;
+
+
+
+        let testing = (percentage * .01) * this.cssTimeMaxSize;        
+        element!.style.boxShadow = "inset 0 0 0 "+ testing +"px " + color;
+    }
+
+    clearLock(clickElem: HTMLElement | null, timerElem: HTMLElement | null): void {
+        this.timer = false;
+        this.count = 1;
+        this.clickCount = 0; 
+
+        clickElem!.classList.add('trn');
+        clickElem!.style.boxShadow = "inset 0 0 0 0px green";    
+        let time = setTimeout(()=>{
+            clickElem!.classList.remove('trn');
+            clearTimeout(time);
+        },500);
+
+        timerElem!.classList.add('trn');
+        timerElem!.style.boxShadow = "inset 0 0 0 0px rgb(255, 117, 117)";    
+        let time2 = setTimeout(()=>{
+            timerElem!.classList.remove('trn');
+            clearTimeout(time2);
+        },500);        
+    }
+
+    clearTimeOutInterval():void {
+        clearInterval(this.counter);
+        clearTimeout(this.timeOut);  
+    }
+
+    isChallengeOk(): boolean {
+        if(this.clickCount >= this.clickRequest){
+            return true;
+        }
+        return false;
     }
 
 }
