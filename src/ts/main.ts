@@ -16,7 +16,7 @@ class Nagivate {
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
         this.resizeWindow();
-        this.loader(15,this.removeLoader);
+        this.loader(1,this.removeLoader);
     }
 
     assignEvents(): void {
@@ -107,8 +107,10 @@ class Nagivate {
     }
 }
 let navigate = new Nagivate();
+/*
 
 
+**/
 class Gallery {
 
     showDetailsBtn: NodeListOf<Element> | null;
@@ -137,7 +139,6 @@ class Gallery {
 
 }
 let gallery = new Gallery();
-
 class Email {
 
     data: {
@@ -251,3 +252,158 @@ class Email {
     }
 }
 let email = new Email();
+
+class LockChallenge {
+
+    buttons: NodeListOf<Element> | null;
+    buttonWiggleDuration: number;
+    count: number;
+    timer: boolean;
+    timerLimit: number;
+    timerTotal: number;
+    clickCount: number = 0;
+    clickRequest: number;
+    challengeSuccess: boolean;
+    counter: any;
+    timeOut: any;
+    cssTimeMaxSize: number;
+
+    constructor() {
+        this.challengeSuccess = false;
+        this.buttonWiggleDuration = 500;
+        this.buttons = document.querySelectorAll('.release-content');
+        this.count = 1;
+        this.timer = false;
+        this.timerLimit = 3000; //#//
+        this.timerTotal = this.timerLimit * 0.01;
+        this.clickRequest = 20; //#//
+        this.cssTimeMaxSize = 60;
+
+        this.prepareButtons();
+    }
+    prepareButtons(): void {
+        this.buttons!.forEach((btn: Element) => btn.addEventListener('click',() => this.clickResult(<HTMLElement>btn)));
+    }
+    clickResult(btn: HTMLElement): boolean {
+
+        let lockIcon = btn.querySelector('i');
+        let challengeElem: HTMLElement | null = document.querySelector('.locked .challenge');
+        let timerElem: HTMLElement | null = document.querySelector('.locked');
+
+
+        if(this.challengeSuccess){
+            return true;
+        }
+
+        if(!this.timer){
+            this.timer = true;
+
+            (<HTMLElement> document.querySelector(".forshadow")).classList.remove('alive');
+
+            this._animateButton(lockIcon);
+
+            this.counter = setInterval(()=>{
+                this._timerBGColor(timerElem,this.count++, this.timerTotal, "rgb(255, 117, 117)");
+                console.log("test");     
+            },100);
+
+            this.timeOut = setTimeout(()=>{
+                this.clearTimeOutInterval();
+                this.clearLock(challengeElem, timerElem);
+                this.lockNormalState(lockIcon);
+                if(!this.isChallengeOk()){
+                    console.log("failed")
+                    lockIcon!.classList.remove('fa-lock')
+                    lockIcon!.classList.add('fa-times');
+                    setTimeout(()=>{
+                        lockIcon!.classList.remove('fa-times')
+                        lockIcon!.classList.add('fa-lock');
+                        (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
+                    },500);
+                }
+            },this.timerLimit);
+        }else{        
+            this.clickCount++
+            this._unlockingMove(lockIcon);
+            this._timerBGColor(challengeElem, this.clickCount, this.clickRequest,"#679267");
+            if(this.isChallengeOk()){
+                this.clearTimeOutInterval();
+                this.challengeSuccess = true;
+                lockIcon!.classList.remove('fa-lock')
+                lockIcon!.classList.add('fa-unlock');
+                setTimeout(()=>{
+                    this.lockNormalState(lockIcon);
+                    lockIcon!.classList.remove('fa-unlock')
+                    lockIcon!.classList.add('fa-lock-open');
+                    (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
+                },500);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private lockNormalState(lockIcon: HTMLElement | null): void {
+        lockIcon!.style.transform = "rotate(0deg)";
+    }
+
+    private _animateButton(btn: any): void {
+        let animationTime = this.buttonWiggleDuration * .001;            
+        let timeout = setTimeout(()=>{
+            btn.style.animation = "none";
+            clearTimeout(timeout);
+        },this.buttonWiggleDuration);
+        btn.style.animation = "pabebe " + animationTime + "s";        
+    }
+
+    private _unlockingMove(lockIcon: HTMLElement | null): void {
+        if(this.clickCount % 2 == 1){
+            lockIcon!.style.transform = "rotate(-10deg)";
+        }else{
+            lockIcon!.style.transform = "rotate(10deg)";
+        }
+    }
+
+    private _timerBGColor(element: HTMLElement | null, timer: number, timerTotal: number, color: string): void {            
+        let percentage = (timer / timerTotal) * 100;
+
+
+
+        let testing = (percentage * .01) * this.cssTimeMaxSize;        
+        element!.style.boxShadow = "inset 0 0 0 "+ testing +"px " + color;
+    }
+
+    clearLock(clickElem: HTMLElement | null, timerElem: HTMLElement | null): void {
+        this.timer = false;
+        this.count = 1;
+        this.clickCount = 0; 
+
+        clickElem!.classList.add('trn');
+        clickElem!.style.boxShadow = "inset 0 0 0 0px green";    
+        let time = setTimeout(()=>{
+            clickElem!.classList.remove('trn');
+            clearTimeout(time);
+        },500);
+
+        timerElem!.classList.add('trn');
+        timerElem!.style.boxShadow = "inset 0 0 0 0px rgb(255, 117, 117)";    
+        let time2 = setTimeout(()=>{
+            timerElem!.classList.remove('trn');
+            clearTimeout(time2);
+        },500);        
+    }
+
+    clearTimeOutInterval():void {
+        clearInterval(this.counter);
+        clearTimeout(this.timeOut);  
+    }
+
+    isChallengeOk(): boolean {
+        if(this.clickCount >= this.clickRequest){
+            return true;
+        }
+        return false;
+    }
+
+}
+let lock = new LockChallenge();
