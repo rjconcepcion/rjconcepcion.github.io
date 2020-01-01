@@ -16,7 +16,7 @@ class Nagivate {
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
         this.resizeWindow();
-        this.loader(1,this.removeLoader);
+        this.loader(15,this.removeLoader);
     }
 
     assignEvents(): void {
@@ -274,9 +274,9 @@ class LockChallenge {
         this.buttons = document.querySelectorAll('.release-content');
         this.count = 1;
         this.timer = false;
-        this.timerLimit = 3000; //#//
+        this.timerLimit = 5000; //#//
         this.timerTotal = this.timerLimit * 0.01;
-        this.clickRequest = 20; //#//
+        this.clickRequest = 10; //#//
         this.cssTimeMaxSize = 60;
 
         this.prepareButtons();
