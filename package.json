@@ -1,0 +1,29 @@
+{
+  "name": "rjconcepcion.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjconcepcion/rjconcepcion.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjconcepcion/rjconcepcion.github.io/issues"
+  },
+  "homepage": "https://github.com/rjconcepcion/rjconcepcion.github.io#readme",
+  "devDependencies": {
+    "css-loader": "^3.4.0",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.1.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5"
+  },
+  "dependencies": {}
+}
