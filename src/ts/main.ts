@@ -2,7 +2,6 @@ class Nagivate {
 
     menuLinks: NodeListOf<Element> | null;
     contents: NodeListOf<Element> | null;
-    contentsHeight: Array<any>;
     currentPage: string;
     loaderTimeout: number;
 
@@ -10,12 +9,10 @@ class Nagivate {
         this.loaderTimeout = 0;
         this.menuLinks = document.querySelectorAll('ul li a');
         this.contents = document.querySelectorAll('div.contents section');
-        this.contentsHeight = [];
         this.assignEvents();
         this.prepareContents();
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
-        this.resizeWindow();
         this.loader(15,this.removeLoader);
     }
 
@@ -26,37 +23,32 @@ class Nagivate {
                 let hash = (<any> e.srcElement).hash;
                 _this.currentPage = hash;
                 _this.showLinkContent(hash);
-                _this.setActiveMenu(e);
             });
         });
     }
 
-    setActiveMenu(e: any): void {
+    setActiveMenu(hrefValue: string): void {
         document.querySelectorAll('ul li.active')[0].classList.remove('active');
-        (<any> e.srcElement).parentNode.classList.add('active');
+        (<any> document.querySelector('[href="'+hrefValue+'"]')).parentNode.classList.add('active');
     }
 
     showLinkContent(sectionID: string): void {
-        const contentArea: HTMLElement | null = document.querySelector(sectionID);
+
+
+        let contentArea: HTMLElement | null = document.querySelector(sectionID);
         let existingOpen = document.querySelectorAll('.contents .open-sesame-seed')[0];
+
+        this.setActiveMenu(sectionID);
+
         if(existingOpen != undefined){
             existingOpen.classList.remove('open-sesame-seed');
             this.closeContent(existingOpen);
         }
         contentArea!.classList.add('open-sesame-seed');
-        contentArea!.style.height = this.contentsHeight[<any> sectionID.substr(1)] + "px";
-        contentArea!.style.opacity = '1';
-    }
-
-    resizeWindow(): void {
-        let _this = this;
-        window.onresize = ()=>{
-            this.contents!.forEach(function(section: any, i){
-                (<any> section).removeAttribute('style');
-                _this.closeContent(section);                
-            });
-            this.showLinkContent(this.currentPage);
-        }
+        contentArea!.style.display = 'block';
+        setTimeout(()=>{
+            contentArea!.style.opacity = '1';
+        },100);
     }
 
     prepareContents(): void {
@@ -67,9 +59,8 @@ class Nagivate {
     }
 
     closeContent(section: any) {
-        this.contentsHeight[section.getAttribute('id')] = section.scrollHeight;
         section.classList.add('trn');
-        section.style.height = 0;
+        section.style.display = "none";
         section.style.opacity = 0;
     }
 
@@ -107,10 +98,7 @@ class Nagivate {
     }
 }
 let navigate = new Nagivate();
-/*
 
-
-**/
 class Gallery {
 
     showDetailsBtn: NodeListOf<Element> | null;
@@ -256,6 +244,7 @@ let email = new Email();
 class LockChallenge {
 
     buttons: NodeListOf<Element> | null;
+    container: HTMLElement | null;
     buttonWiggleDuration: number;
     count: number;
     timer: boolean;
@@ -264,6 +253,7 @@ class LockChallenge {
     clickCount: number = 0;
     clickRequest: number;
     challengeSuccess: boolean;
+    restDay: boolean;
     counter: any;
     timeOut: any;
     cssTimeMaxSize: number;
@@ -272,54 +262,49 @@ class LockChallenge {
         this.challengeSuccess = false;
         this.buttonWiggleDuration = 500;
         this.buttons = document.querySelectorAll('.release-content');
+        this.container = document.querySelector(".forshadow");
         this.count = 1;
         this.timer = false;
-        this.timerLimit = 5000; //#//
+        this.timerLimit = 4000; //#//
         this.timerTotal = this.timerLimit * 0.01;
-        this.clickRequest = 10; //#//
+        this.clickRequest = 5; //#//
         this.cssTimeMaxSize = 60;
-
+        this.restDay = false;
         this.prepareButtons();
     }
     prepareButtons(): void {
-        this.buttons!.forEach((btn: Element) => btn.addEventListener('click',() => this.clickResult(<HTMLElement>btn)));
+        this.buttons!.forEach((btn) => btn!.addEventListener('click',() => {
+            this.clickResult(<HTMLElement> btn);
+            
+        }));
     }
-    clickResult(btn: HTMLElement): boolean {
-
-        let lockIcon = btn.querySelector('i');
+    clickResult(btn: HTMLElement | null): boolean {
+        
+        
+        let lockIcon = btn!.querySelector('i');
         let challengeElem: HTMLElement | null = document.querySelector('.locked .challenge');
         let timerElem: HTMLElement | null = document.querySelector('.locked');
 
+        console.log(this.restDay);
 
-        if(this.challengeSuccess){
+        if(this.challengeSuccess || this.restDay){
             return true;
         }
 
         if(!this.timer){
             this.timer = true;
-
-            (<HTMLElement> document.querySelector(".forshadow")).classList.remove('alive');
-
+            this.container!.classList.remove('alive');
             this._animateButton(lockIcon);
-
             this.counter = setInterval(()=>{
-                this._timerBGColor(timerElem,this.count++, this.timerTotal, "rgb(255, 117, 117)");
+                this._timerBGColor(timerElem,this.count++, this.timerTotal, "#ff7575");
                 console.log("test");     
             },100);
-
             this.timeOut = setTimeout(()=>{
                 this.clearTimeOutInterval();
                 this.clearLock(challengeElem, timerElem);
                 this.lockNormalState(lockIcon);
                 if(!this.isChallengeOk()){
-                    console.log("failed")
-                    lockIcon!.classList.remove('fa-lock')
-                    lockIcon!.classList.add('fa-times');
-                    setTimeout(()=>{
-                        lockIcon!.classList.remove('fa-times')
-                        lockIcon!.classList.add('fa-lock');
-                        (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
-                    },500);
+                    this.challengeFailed(lockIcon);
                 }
             },this.timerLimit);
         }else{        
@@ -329,14 +314,17 @@ class LockChallenge {
             if(this.isChallengeOk()){
                 this.clearTimeOutInterval();
                 this.challengeSuccess = true;
-                lockIcon!.classList.remove('fa-lock')
-                lockIcon!.classList.add('fa-unlock');
-                setTimeout(()=>{
-                    this.lockNormalState(lockIcon);
-                    lockIcon!.classList.remove('fa-unlock')
-                    lockIcon!.classList.add('fa-lock-open');
-                    (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
-                },500);
+                this.challengeOk(lockIcon);
+
+                //setTimeout(()=>{
+                    let targetContainer: string | null = btn!.parentElement!.parentElement!.getAttribute('data-target-content');
+
+                    document.getElementById(<string> targetContainer)!.style.display = "block";
+                    setTimeout(()=>{
+                        document.getElementById(<string> targetContainer)!.style.opacity = "1";
+                    },2300);
+                //},2500);
+
                 return true;
             }
         }
@@ -366,9 +354,6 @@ class LockChallenge {
 
     private _timerBGColor(element: HTMLElement | null, timer: number, timerTotal: number, color: string): void {            
         let percentage = (timer / timerTotal) * 100;
-
-
-
         let testing = (percentage * .01) * this.cssTimeMaxSize;        
         element!.style.boxShadow = "inset 0 0 0 "+ testing +"px " + color;
     }
@@ -379,14 +364,14 @@ class LockChallenge {
         this.clickCount = 0; 
 
         clickElem!.classList.add('trn');
-        clickElem!.style.boxShadow = "inset 0 0 0 0px green";    
+        clickElem!.style.boxShadow = "inset 0 0 0 0px #679267";    
         let time = setTimeout(()=>{
             clickElem!.classList.remove('trn');
             clearTimeout(time);
         },500);
 
         timerElem!.classList.add('trn');
-        timerElem!.style.boxShadow = "inset 0 0 0 0px rgb(255, 117, 117)";    
+        timerElem!.style.boxShadow = "inset 0 0 0 0px #ff7575";    
         let time2 = setTimeout(()=>{
             timerElem!.classList.remove('trn');
             clearTimeout(time2);
@@ -405,5 +390,38 @@ class LockChallenge {
         return false;
     }
 
+    challengeFailed(iconElem: HTMLElement | null): void {
+        iconElem!.classList.remove('fa-lock')
+        iconElem!.classList.add('fa-times');
+        this.restDay = true;
+        let timeout = setTimeout(()=>{
+            iconElem!.classList.remove('fa-times')
+            iconElem!.classList.add('fa-lock');
+            this.container!.classList.add('alive');
+            this.restDay = false;
+            clearTimeout(timeout);
+        },1500);      
+    }
+
+    challengeOk(iconElem: HTMLElement | null): void {
+        let parentWrap = iconElem!.parentElement!.parentElement!.parentElement!.parentElement;
+        iconElem!.classList.remove('fa-lock')
+        iconElem!.classList.add('fa-unlock');
+
+
+        setTimeout(()=>{
+            this.lockNormalState(iconElem);
+            iconElem!.classList.remove('fa-unlock')
+            iconElem!.classList.add('fa-lock-open');
+        },1000);
+        setTimeout(()=>{
+            parentWrap!.classList.add('trn');
+            parentWrap!.style.marginLeft = "-215px";
+            //parentWrap!.parentElement!.removeChild(<any>parentWrap);
+        },1500);        
+        setTimeout(()=>{
+            parentWrap!.parentElement!.removeChild(<any>parentWrap);
+        },2000);
+    }
 }
 let lock = new LockChallenge();
