@@ -256,6 +256,7 @@ let email = new Email();
 class LockChallenge {
 
     buttons: NodeListOf<Element> | null;
+    container: HTMLElement | null;
     buttonWiggleDuration: number;
     count: number;
     timer: boolean;
@@ -272,6 +273,7 @@ class LockChallenge {
         this.challengeSuccess = false;
         this.buttonWiggleDuration = 500;
         this.buttons = document.querySelectorAll('.release-content');
+        this.container = document.querySelector(".forshadow");
         this.count = 1;
         this.timer = false;
         this.timerLimit = 5000; //#//
@@ -282,14 +284,17 @@ class LockChallenge {
         this.prepareButtons();
     }
     prepareButtons(): void {
-        this.buttons!.forEach((btn: Element) => btn.addEventListener('click',() => this.clickResult(<HTMLElement>btn)));
+        this.buttons!.forEach((btn) => btn!.addEventListener('click',() => {
+            this.clickResult(<HTMLElement> btn);
+            
+        }));
     }
-    clickResult(btn: HTMLElement): boolean {
-
-        let lockIcon = btn.querySelector('i');
+    clickResult(btn: HTMLElement | null): boolean {
+        
+        
+        let lockIcon = btn!.querySelector('i');
         let challengeElem: HTMLElement | null = document.querySelector('.locked .challenge');
         let timerElem: HTMLElement | null = document.querySelector('.locked');
-
 
         if(this.challengeSuccess){
             return true;
@@ -297,29 +302,18 @@ class LockChallenge {
 
         if(!this.timer){
             this.timer = true;
-
-            (<HTMLElement> document.querySelector(".forshadow")).classList.remove('alive');
-
+            this.container!.classList.remove('alive');
             this._animateButton(lockIcon);
-
             this.counter = setInterval(()=>{
-                this._timerBGColor(timerElem,this.count++, this.timerTotal, "rgb(255, 117, 117)");
+                this._timerBGColor(timerElem,this.count++, this.timerTotal, "#ff7575");
                 console.log("test");     
             },100);
-
             this.timeOut = setTimeout(()=>{
                 this.clearTimeOutInterval();
                 this.clearLock(challengeElem, timerElem);
                 this.lockNormalState(lockIcon);
                 if(!this.isChallengeOk()){
-                    console.log("failed")
-                    lockIcon!.classList.remove('fa-lock')
-                    lockIcon!.classList.add('fa-times');
-                    setTimeout(()=>{
-                        lockIcon!.classList.remove('fa-times')
-                        lockIcon!.classList.add('fa-lock');
-                        (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
-                    },500);
+                    this.challengeFailed(lockIcon);
                 }
             },this.timerLimit);
         }else{        
@@ -329,14 +323,12 @@ class LockChallenge {
             if(this.isChallengeOk()){
                 this.clearTimeOutInterval();
                 this.challengeSuccess = true;
-                lockIcon!.classList.remove('fa-lock')
-                lockIcon!.classList.add('fa-unlock');
-                setTimeout(()=>{
-                    this.lockNormalState(lockIcon);
-                    lockIcon!.classList.remove('fa-unlock')
-                    lockIcon!.classList.add('fa-lock-open');
-                    (<HTMLElement> document.querySelector(".forshadow")).classList.add('alive');
-                },500);
+                this.challengeOk(lockIcon);
+
+                let targetContainer: string | null = btn!.parentElement!.parentElement!.getAttribute('data-target-content');
+
+                document.getElementById(<string> targetContainer)!.style.display = "block";
+
                 return true;
             }
         }
@@ -366,9 +358,6 @@ class LockChallenge {
 
     private _timerBGColor(element: HTMLElement | null, timer: number, timerTotal: number, color: string): void {            
         let percentage = (timer / timerTotal) * 100;
-
-
-
         let testing = (percentage * .01) * this.cssTimeMaxSize;        
         element!.style.boxShadow = "inset 0 0 0 "+ testing +"px " + color;
     }
@@ -379,14 +368,14 @@ class LockChallenge {
         this.clickCount = 0; 
 
         clickElem!.classList.add('trn');
-        clickElem!.style.boxShadow = "inset 0 0 0 0px green";    
+        clickElem!.style.boxShadow = "inset 0 0 0 0px #679267";    
         let time = setTimeout(()=>{
             clickElem!.classList.remove('trn');
             clearTimeout(time);
         },500);
 
         timerElem!.classList.add('trn');
-        timerElem!.style.boxShadow = "inset 0 0 0 0px rgb(255, 117, 117)";    
+        timerElem!.style.boxShadow = "inset 0 0 0 0px #ff7575";    
         let time2 = setTimeout(()=>{
             timerElem!.classList.remove('trn');
             clearTimeout(time2);
@@ -405,5 +394,25 @@ class LockChallenge {
         return false;
     }
 
+    challengeFailed(iconElem: HTMLElement | null): void {
+        iconElem!.classList.remove('fa-lock')
+        iconElem!.classList.add('fa-times');
+        setTimeout(()=>{
+            iconElem!.classList.remove('fa-times')
+            iconElem!.classList.add('fa-lock');
+            this.container!.classList.add('alive');
+        },500);        
+    }
+
+    challengeOk(iconElem: HTMLElement | null): void {
+        iconElem!.classList.remove('fa-lock')
+        iconElem!.classList.add('fa-unlock');
+        setTimeout(()=>{
+            this.lockNormalState(iconElem);
+            iconElem!.classList.remove('fa-unlock')
+            iconElem!.classList.add('fa-lock-open');
+            this.container!.classList.add('alive');
+        },500);
+    }
 }
 let lock = new LockChallenge();
