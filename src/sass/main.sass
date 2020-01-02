@@ -78,6 +78,7 @@ html
                         padding: 15px 0
                         .secured-div-lol //FOR FEATURE/LOCKING
                             display: none
+                            opacity: 0
                     .gallery
                         border-left: 5px solid #000
                         padding-left: 5px
@@ -291,10 +292,13 @@ article
 .forshadow
     height: 200px
     width: 200px
-    margin: 0 auto
-    border-radius: 50% 
+    margin-left: 15px
+    border-radius: 50%
+    position: relative
     &.alive
         animation: alive 3s ease-in-out infinite
+        &:after 
+            content: ''
     .locked
         height: 200px
         width: 200px

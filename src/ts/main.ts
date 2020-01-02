@@ -253,6 +253,7 @@ class LockChallenge {
     clickCount: number = 0;
     clickRequest: number;
     challengeSuccess: boolean;
+    restDay: boolean;
     counter: any;
     timeOut: any;
     cssTimeMaxSize: number;
@@ -264,11 +265,11 @@ class LockChallenge {
         this.container = document.querySelector(".forshadow");
         this.count = 1;
         this.timer = false;
-        this.timerLimit = 5000; //#//
+        this.timerLimit = 4000; //#//
         this.timerTotal = this.timerLimit * 0.01;
-        this.clickRequest = 10; //#//
+        this.clickRequest = 5; //#//
         this.cssTimeMaxSize = 60;
-
+        this.restDay = false;
         this.prepareButtons();
     }
     prepareButtons(): void {
@@ -284,7 +285,9 @@ class LockChallenge {
         let challengeElem: HTMLElement | null = document.querySelector('.locked .challenge');
         let timerElem: HTMLElement | null = document.querySelector('.locked');
 
-        if(this.challengeSuccess){
+        console.log(this.restDay);
+
+        if(this.challengeSuccess || this.restDay){
             return true;
         }
 
@@ -313,9 +316,14 @@ class LockChallenge {
                 this.challengeSuccess = true;
                 this.challengeOk(lockIcon);
 
-                let targetContainer: string | null = btn!.parentElement!.parentElement!.getAttribute('data-target-content');
+                //setTimeout(()=>{
+                    let targetContainer: string | null = btn!.parentElement!.parentElement!.getAttribute('data-target-content');
 
-                document.getElementById(<string> targetContainer)!.style.display = "block";
+                    document.getElementById(<string> targetContainer)!.style.display = "block";
+                    setTimeout(()=>{
+                        document.getElementById(<string> targetContainer)!.style.opacity = "1";
+                    },2300);
+                //},2500);
 
                 return true;
             }
@@ -385,22 +393,35 @@ class LockChallenge {
     challengeFailed(iconElem: HTMLElement | null): void {
         iconElem!.classList.remove('fa-lock')
         iconElem!.classList.add('fa-times');
-        setTimeout(()=>{
+        this.restDay = true;
+        let timeout = setTimeout(()=>{
             iconElem!.classList.remove('fa-times')
             iconElem!.classList.add('fa-lock');
             this.container!.classList.add('alive');
-        },500);        
+            this.restDay = false;
+            clearTimeout(timeout);
+        },1500);      
     }
 
     challengeOk(iconElem: HTMLElement | null): void {
+        let parentWrap = iconElem!.parentElement!.parentElement!.parentElement!.parentElement;
         iconElem!.classList.remove('fa-lock')
         iconElem!.classList.add('fa-unlock');
+
+
         setTimeout(()=>{
             this.lockNormalState(iconElem);
             iconElem!.classList.remove('fa-unlock')
             iconElem!.classList.add('fa-lock-open');
-            this.container!.classList.add('alive');
-        },500);
+        },1000);
+        setTimeout(()=>{
+            parentWrap!.classList.add('trn');
+            parentWrap!.style.marginLeft = "-215px";
+            //parentWrap!.parentElement!.removeChild(<any>parentWrap);
+        },1500);        
+        setTimeout(()=>{
+            parentWrap!.parentElement!.removeChild(<any>parentWrap);
+        },2000);
     }
 }
 let lock = new LockChallenge();
