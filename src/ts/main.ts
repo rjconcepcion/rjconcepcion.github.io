@@ -2,7 +2,6 @@ class Nagivate {
 
     menuLinks: NodeListOf<Element> | null;
     contents: NodeListOf<Element> | null;
-    contentsHeight: Array<any>;
     currentPage: string;
     loaderTimeout: number;
 
@@ -10,12 +9,10 @@ class Nagivate {
         this.loaderTimeout = 0;
         this.menuLinks = document.querySelectorAll('ul li a');
         this.contents = document.querySelectorAll('div.contents section');
-        this.contentsHeight = [];
         this.assignEvents();
         this.prepareContents();
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
-        this.resizeWindow();
         this.loader(15,this.removeLoader);
     }
 
@@ -26,37 +23,32 @@ class Nagivate {
                 let hash = (<any> e.srcElement).hash;
                 _this.currentPage = hash;
                 _this.showLinkContent(hash);
-                _this.setActiveMenu(e);
             });
         });
     }
 
-    setActiveMenu(e: any): void {
+    setActiveMenu(hrefValue: string): void {
         document.querySelectorAll('ul li.active')[0].classList.remove('active');
-        (<any> e.srcElement).parentNode.classList.add('active');
+        (<any> document.querySelector('[href="'+hrefValue+'"]')).parentNode.classList.add('active');
     }
 
     showLinkContent(sectionID: string): void {
-        const contentArea: HTMLElement | null = document.querySelector(sectionID);
+
+
+        let contentArea: HTMLElement | null = document.querySelector(sectionID);
         let existingOpen = document.querySelectorAll('.contents .open-sesame-seed')[0];
+
+        this.setActiveMenu(sectionID);
+
         if(existingOpen != undefined){
             existingOpen.classList.remove('open-sesame-seed');
             this.closeContent(existingOpen);
         }
         contentArea!.classList.add('open-sesame-seed');
-        contentArea!.style.height = this.contentsHeight[<any> sectionID.substr(1)] + "px";
-        contentArea!.style.opacity = '1';
-    }
-
-    resizeWindow(): void {
-        let _this = this;
-        window.onresize = ()=>{
-            this.contents!.forEach(function(section: any, i){
-                (<any> section).removeAttribute('style');
-                _this.closeContent(section);                
-            });
-            this.showLinkContent(this.currentPage);
-        }
+        contentArea!.style.display = 'block';
+        setTimeout(()=>{
+            contentArea!.style.opacity = '1';
+        },100);
     }
 
     prepareContents(): void {
@@ -67,9 +59,8 @@ class Nagivate {
     }
 
     closeContent(section: any) {
-        this.contentsHeight[section.getAttribute('id')] = section.scrollHeight;
         section.classList.add('trn');
-        section.style.height = 0;
+        section.style.display = "none";
         section.style.opacity = 0;
     }
 
@@ -107,10 +98,7 @@ class Nagivate {
     }
 }
 let navigate = new Nagivate();
-/*
 
-
-**/
 class Gallery {
 
     showDetailsBtn: NodeListOf<Element> | null;
