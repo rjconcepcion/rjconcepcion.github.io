@@ -1,6 +1,7 @@
 class Nagivate {
 
     menuLinks: NodeListOf<Element> | null;
+    ordinaryLinks : NodeListOf<Element> | null;
     contents: NodeListOf<Element> | null;
     currentPage: string;
     loaderTimeout: number;
@@ -8,7 +9,8 @@ class Nagivate {
     constructor() {
         this.loaderTimeout = 0;
         this.menuLinks = document.querySelectorAll('ul li a');
-        this.contents = document.querySelectorAll('div.contents section');
+        this.ordinaryLinks = document.querySelectorAll('.readm');
+        this.contents = document.querySelectorAll('div.contents section');        
         this.assignEvents();
         this.prepareContents();
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
@@ -19,6 +21,14 @@ class Nagivate {
     assignEvents(): void {
         let _this = this;
         this.menuLinks!.forEach(function(item: Element, i){
+            item.addEventListener("click", ( e ) => {
+                let hash = (<any> e.srcElement).hash;
+                _this.currentPage = hash;
+                _this.showLinkContent(hash);
+            });
+        });
+
+        this.ordinaryLinks!.forEach(function(item: Element, i){
             item.addEventListener("click", ( e ) => {
                 let hash = (<any> e.srcElement).hash;
                 _this.currentPage = hash;
