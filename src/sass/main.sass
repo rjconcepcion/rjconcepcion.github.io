@@ -9,6 +9,7 @@ ul
 html
     font-family: Consolas,monospace
     font-size: 14px
+    overflow-y: overlay
     body
         margin: 0 auto
         main
@@ -30,14 +31,13 @@ html
                         justify-content: center
                         align-items: center
                         border-radius: 50%
-                        background: #000
                         text-decoration: none
                         margin: 15px auto 30px auto                        
                         &:hover 
                             animation: birdmove .5s
                         span 
-                            font-size: 80px
-                            color:#fff
+                            font-size: 125px
+                            color:#000
                         
                 ul
                     li
@@ -225,16 +225,11 @@ html
 
 
                                                      
-        // footer
-        //     height: 49px
-        //     border-top: 1px solid #000
-        //     transform: skewY(5deg)
-        //     background-color: #fff
-        //     padding-top: 20px
-        //     p
-        //         text-align: center
-        //         transform: skewY(-5deg)
-        //         width: 50%
+        footer
+            p
+                text-align: center
+                transform: skewY(-5deg)
+                width: 50%
               
         #loader          
             span
