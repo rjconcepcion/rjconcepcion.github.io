@@ -20,21 +20,25 @@ class Nagivate {
 
     assignEvents(): void {
         let _this = this;
-        this.menuLinks!.forEach(function(item: Element, i){
-            item.addEventListener("click", ( e ) => {
+        let menuLinks = this.menuLinks;
+        let ordLinks = this.ordinaryLinks;
+        for (var ctr = 0; ctr < menuLinks!.length; ctr++) {
+            menuLinks![ctr].addEventListener("click", ( e ) => {
                 let hash = (<any> e.srcElement).hash;
                 _this.currentPage = hash;
                 _this.showLinkContent(hash);
-            });
-        });
+            });            
+        }
 
-        this.ordinaryLinks!.forEach(function(item: Element, i){
-            item.addEventListener("click", ( e ) => {
+        for (var ctr = 0; ctr < ordLinks!.length; ctr++) {
+            ordLinks![ctr].addEventListener("click", ( e ) => {
                 let hash = (<any> e.srcElement).hash;
                 _this.currentPage = hash;
                 _this.showLinkContent(hash);
             });
-        });
+
+        }        
+        
     }
 
     setActiveMenu(hrefValue: string): void {
@@ -63,9 +67,11 @@ class Nagivate {
 
     prepareContents(): void {
         let _this = this;
-        this.contents!.forEach(function(section: any, i){      
-            _this.closeContent(section);
-        });
+        let contents = this.contents;
+        for(var ctr = 0; ctr < contents!.length; ctr++){
+            _this.closeContent(contents![ctr]);
+        }
+
     }
 
     closeContent(section: any) {
