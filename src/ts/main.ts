@@ -15,7 +15,7 @@ class Nagivate {
         this.prepareContents();
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
-        this.loader(1,this.removeLoader);
+        this.loader(10,this.removeLoader);
     }
 
     assignEvents(): void {
