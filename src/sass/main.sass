@@ -1,6 +1,10 @@
 /**
  * RESET DEFAULT CSS
  */
+*
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
 ul
     margin: 0
     padding-left: 0
@@ -70,9 +74,9 @@ html
 
             .contents
                 margin-left: 180px
-                padding-top: 66px
                 width: 100%
                 section
+                    padding-top: 40px
                     overflow: hidden
                     .inner-wrp 
                         padding: 15px 0
@@ -87,9 +91,6 @@ html
                         .img-wrap
                             border: 1px dashed #000
                             padding: 3px
-                            -webkit-box-sizing: border-box
-                            -moz-box-sizing: border-box
-                            box-sizing: border-box
                             height: 208px
                             position: relative
                             margin: 10px
@@ -128,9 +129,6 @@ html
                                         .inner-details-wrap
                                             height: inherit
                                             width: 246px
-                                            -webkit-box-sizing: border-box
-                                            -moz-box-sizing: border-box
-                                            box-sizing: border-box
                                             padding: 15px
                                             h3
                                                 font-size: 18px
@@ -170,18 +168,11 @@ html
                                                     i
                                                         color: #000
                                                         font-size: 23px
-                    .form-wrap
-                        -webkit-box-sizing: border-box
-                        -moz-box-sizing: border-box
-                        box-sizing: border-box                        
+                    .form-wrap                      
                         border-left: 5px solid #000
                         padding-left: 15px   
                         max-width: 320px
-                        width: 100%  
-                        * 
-                            -webkit-box-sizing: border-box
-                            -moz-box-sizing: border-box
-                            box-sizing: border-box                                        
+                        width: 100%                                      
                         .field-wrap
                             width: 100%
                             margin-bottom: 15px
@@ -314,6 +305,105 @@ article
                 i
                     font-size: 32px
                     color: #fff
+
+.timeline
+    position: relative
+    max-width: 1200px
+    width: 100%
+    margin: 0 auto
+    &:after
+        content: ''
+        position: absolute
+        width: 5px
+        background-color: white
+        top: 0
+        bottom: 0
+        left: 50%
+        margin-left: -3px
+    .container
+        padding: 20px 40px
+        position: relative
+        background-color: inherit
+        width: 50%
+        &:after
+            content: ''
+            position: absolute
+            width: 16px
+            height: 16px
+            right: -12px
+            background-color: #000
+            border: 4px solid #fff
+            top: 40px
+            border-radius: 50%
+            z-index: 1
+        &.left
+            left: 0
+            &::before
+                content: " "
+                height: 0
+                position: absolute
+                top: 42px
+                width: 0
+                z-index: 1
+                right: 30px
+                border: medium solid white
+                border-width: 10px 0 10px 10px
+                border-color: transparent transparent transparent white                
+        &.right
+            left: 50%
+            &::before
+                content: " "
+                height: 0
+                position: absolute
+                top: 42px
+                width: 0
+                z-index: 1
+                left: 30px
+                border: medium solid white
+                border-width: 10px 10px 10px 0
+                border-color: transparent white transparent transparent
+            &::after
+                left: -12px
+        &.code
+            &::after
+                font-family: "Font Awesome 5 Free"
+                content: "\f121"
+        .content
+            padding: 20px 30px
+            background-color: white
+            position: relative
+            border-radius: 6px
+            a
+                text-decoration: none
+                color: #000                
+            h3
+                font-size: 18px
+                margin-bottom: 0                
+            ul.responsi
+                margin-top: 10px
+                padding-left: 20px
+                li
+                    margin-bottom: 7px
+                    list-style: inside
+                    &:last-child
+                        margin-bottom: 0
+            ul.tech
+                padding-left: 0
+                li
+                    list-style: none
+                    display: inline-block
+                    margin-right: 6px
+                    margin-bottom: 15px
+                    &:last-child
+                        margin-right: 0
+                    i
+                        font-size: 25px
+#about
+    background: #000
+    box-shadow: 956px 0 0 0 black
+    .inner-wrp
+        padding-top: 0
+        padding-bottom: 0
 
 @keyframes alive
     0%
