@@ -15,7 +15,7 @@ class Nagivate {
         this.prepareContents();
         this.currentPage = (window.location.hash == '') ? '#home' : window.location.hash;
         this.showLinkContent(this.currentPage);
-        this.loader(15,this.removeLoader);
+        this.loader(10,this.removeLoader);
     }
 
     assignEvents(): void {
@@ -63,6 +63,16 @@ class Nagivate {
         setTimeout(()=>{
             contentArea!.style.opacity = '1';
         },100);
+
+
+        if(this.currentPage === "#about"){                    
+            (<any> document.querySelector('#about'))!.style.paddingTop = "0";
+        }else{
+            (<any> document.querySelector('#about'))!.style.paddingTop = "40px";
+        }
+
+        
+
     }
 
     prepareContents(): void {
@@ -71,7 +81,6 @@ class Nagivate {
         for(var ctr = 0; ctr < contents!.length; ctr++){
             _this.closeContent(contents![ctr]);
         }
-
     }
 
     closeContent(section: any) {
