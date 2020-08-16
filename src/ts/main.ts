@@ -5,8 +5,10 @@ class Nagivate {
     contents: NodeListOf<Element> | null;
     currentPage: string;
     loaderTimeout: number;
+    validPage: Array<string>;
 
     constructor() {
+        this.validPage = ['#home','#about','#works','#contact'];
         this.loaderTimeout = 0;
         this.menuLinks = document.querySelectorAll('ul li a');
         this.ordinaryLinks = document.querySelectorAll('.readm');
@@ -22,12 +24,15 @@ class Nagivate {
         let _this = this;
         let menuLinks = this.menuLinks;
         let ordLinks = this.ordinaryLinks;
+        
         for (var ctr = 0; ctr < menuLinks!.length; ctr++) {
-            menuLinks![ctr].addEventListener("click", ( e ) => {
-                let hash = (<any> e.srcElement).hash;
-                _this.currentPage = hash;
-                _this.showLinkContent(hash);
-            });            
+            let hash: any = menuLinks![ctr].getAttribute("href");
+            if(this.validPage.indexOf(<any> hash) >= 0){
+                menuLinks![ctr].addEventListener("click", ( e ) => {          
+                    _this.currentPage = hash;
+                    _this.showLinkContent(hash);
+                });  
+            }
         }
 
         for (var ctr = 0; ctr < ordLinks!.length; ctr++) {
@@ -42,12 +47,20 @@ class Nagivate {
     }
 
     setActiveMenu(hrefValue: string): void {
-        document.querySelectorAll('ul li.active')[0].classList.remove('active');
-        (<any> document.querySelector('[href="'+hrefValue+'"]')).parentNode.classList.add('active');
+
+        //console.log(hrefValue);
+
+        
+            document.querySelectorAll('ul li.active')[0].classList.remove('active');
+            (<any> document.querySelector('[href="'+hrefValue+'"]')).parentNode.classList.add('active');
+       // }
     }
 
-    showLinkContent(sectionID: string): void {
+    showLinkContent(sectionID: string) {
 
+        if(this.validPage.indexOf(<any> sectionID) < 0){
+            sectionID = "#home";
+        }
 
         let contentArea: HTMLElement | null = document.querySelector(sectionID);
         let existingOpen = document.querySelectorAll('.contents .open-sesame-seed')[0];
@@ -450,3 +463,26 @@ class LockChallenge {
     }
 }
 let lock = new LockChallenge();
+
+class PowerLvl {
+
+    powerBars: NodeListOf<Element> | null;
+
+    constructor() {
+
+        this.powerBars = document.querySelectorAll('.bar-wrap');
+
+        setTimeout(()=>{
+            for(let ctr = 0; ctr < this.powerBars!.length; ctr++){
+                let percentage = this.powerBars![ctr].getAttribute("title");
+                let _this = this;
+                setTimeout(function(){
+                    (<any> _this.powerBars![ctr]).querySelector(".power-lvl").style.opacity = parseInt(<any> percentage)*.01;
+                    (<any> _this.powerBars![ctr]).querySelector(".power-lvl").style.width = percentage;
+                },ctr * 300)
+    
+            }            
+        },1500);
+    }
+}
+let powerLvl = new PowerLvl();

@@ -75,9 +75,11 @@ html
             .contents
                 margin-left: 180px
                 width: 100%
+                padding-right: 15px
                 section
                     padding-top: 40px
                     overflow: hidden
+                    padding-bottom: 60px
                     .inner-wrp 
                         padding: 15px 0
                         .secured-div-lol //FOR FEATURE/LOCKING
@@ -233,7 +235,8 @@ html
 h1
     margin-bottom: 30px
 h2
-    margin-bottom: 35px
+    &.main-header
+        margin-bottom: 35px
 h1,
 h2,
 h3,
@@ -260,11 +263,28 @@ article
     -o-transition: all .2s ease-in-out
     transition: all .2s ease-in-out
 
-.readm
-    text-decoration: none
-    color: inherit
+.readm  
     span
         letter-spacing: -3px
+
+span.arrow
+    letter-spacing: -3px
+    display: inline
+    vertical-align: middle    
+
+ul.plans
+    li
+        padding-left: 30px
+        position: relative
+        margin-bottom: 10px
+        i
+            position: absolute
+            left: 0
+            top: -2px
+            font-size: 20px
+        span
+
+
 //KEY FRAMES
 .forshadow
     height: 200px
@@ -398,9 +418,31 @@ article
                         margin-right: 0
                     i
                         font-size: 25px
+
+    
+    
+.robert-gauge-wrap
+    border-left: 5px solid #000
+    padding-left: 15px
+    padding-bottom: 1px
+    max-width: 500px
+    width: 100%
+    .bar-wrap
+        margin-bottom: 15px
+        .bar
+            height: 9px
+            border: 1px dashed #000        
+            .power-lvl
+                width: 0%
+                opacity: 0
+                background: #000
+                display: block
+                height: 7px        
+
 #about
     background: #000
-    box-shadow: 956px 0 0 0 black
+    box-shadow: 945px 0 0 0 black
+    padding-bottom: 0
     .inner-wrp
         padding-top: 0
         padding-bottom: 0
