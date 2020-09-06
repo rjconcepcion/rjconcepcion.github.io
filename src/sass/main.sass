@@ -551,13 +551,17 @@ ul.plans
                     a
                         span.fa-registered
                             font-size: 35px
-
+                            color: #000
                     #mobile-menu
                         width: 30px
                         height: 25px
                         position: relative
                         cursor: pointer
                         margin-left: 7px
+                        &.left
+                            transform: rotate(1deg)
+                        &.right
+                            transform: rotate(-1deg)
                         &.move
                             span
                                 &:first-of-type
