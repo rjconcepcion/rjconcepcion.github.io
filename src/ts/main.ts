@@ -502,6 +502,15 @@ class MobileMenu {
                 this.bodyClass!.classList.add("mobile-open");
             }
         });
+
+        document.querySelector(".contents")!.addEventListener('click', (event) => {
+            
+            if(this.bodyClass!.classList.contains("mobile-open")){
+                this.hambuger!.classList.remove('move');
+                this.bodyClass!.classList.remove("mobile-open");
+            }
+
+        });
     }
 }
 let mobileMenu = new MobileMenu();
@@ -525,6 +534,7 @@ class NoticeMenu {
                 this.hambuger?.classList.add("right");
                 this.hambuger?.classList.remove("left");
             }
+
 
         });
     }
