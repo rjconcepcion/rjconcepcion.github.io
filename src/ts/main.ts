@@ -488,20 +488,12 @@ class PowerLvl {
 let powerLvl = new PowerLvl();
 
 class MobileMenu {
-
     hambuger: HTMLElement | null;
     bodyClass: HTMLElement | null;
-
     constructor() {
-
-
         this.hambuger = document.querySelector("#mobile-menu");
         this.bodyClass = document.querySelector("body");
-      
-
         this.hambuger!.addEventListener('click', (event) => {
-
-
             if(this.hambuger!.classList.contains("move")){
                 this.hambuger!.classList.remove('move');
                 this.bodyClass!.classList.remove("mobile-open");
@@ -509,17 +501,32 @@ class MobileMenu {
                 this.hambuger!.classList.add('move');
                 this.bodyClass!.classList.add("mobile-open");
             }
-
-            
-            
-          
-
-
-
         });
-
-
     }
-
 }
 let mobileMenu = new MobileMenu();
+
+class NoticeMenu {
+
+    scrollPosition: number = 0;
+    hambuger: HTMLElement | null;
+
+    constructor() {
+        
+        this.hambuger = document.querySelector("#mobile-menu");
+
+        window.addEventListener('scroll', (e) => {
+            this.scrollPosition = window.scrollY;
+
+            if(this.scrollPosition % 2){
+                this.hambuger?.classList.add("left");
+                this.hambuger?.classList.remove("right");
+            }else{
+                this.hambuger?.classList.add("right");
+                this.hambuger?.classList.remove("left");
+            }
+
+        });
+    }
+}
+let noticeMenu = new NoticeMenu();
