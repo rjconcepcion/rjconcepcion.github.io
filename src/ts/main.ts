@@ -129,7 +129,7 @@ class Nagivate {
     }
     showLoader(): void {
         document.getElementById("loader")!.style.opacity = "1";
-        document.getElementById("loader")!.style.zIndex = "1";
+        document.getElementById("loader")!.style.zIndex = "3";
     }
     testing(): void {
         console.log("test navigate");
@@ -486,3 +486,40 @@ class PowerLvl {
     }
 }
 let powerLvl = new PowerLvl();
+
+class MobileMenu {
+
+    hambuger: HTMLElement | null;
+    bodyClass: HTMLElement | null;
+
+    constructor() {
+
+
+        this.hambuger = document.querySelector("#mobile-menu");
+        this.bodyClass = document.querySelector("body");
+      
+
+        this.hambuger!.addEventListener('click', (event) => {
+
+
+            if(this.hambuger!.classList.contains("move")){
+                this.hambuger!.classList.remove('move');
+                this.bodyClass!.classList.remove("mobile-open");
+            }else{
+                this.hambuger!.classList.add('move');
+                this.bodyClass!.classList.add("mobile-open");
+            }
+
+            
+            
+          
+
+
+
+        });
+
+
+    }
+
+}
+let mobileMenu = new MobileMenu();
